@@ -14,7 +14,7 @@
         </div>
     @endif
 
-    <form action="{{ route('evaluations.store') }}" method="POST">
+    <form action="{{ route('evaluation.store') }}" method="POST">
         @csrf
         <div class="mb-3">
             <label for="Titre" class="form-label">Titre</label>
@@ -32,7 +32,7 @@
         </div>
 
         <button type="submit" class="btn btn-success">Ajouter</button>
-        <a href="{{ route('evaluations.index') }}" class="btn btn-secondary">Annuler</a>
+        <a href="{{ route('evaluation.index') }}" class="btn btn-secondary">Annuler</a>
     </form>
 </div>
 @endsection

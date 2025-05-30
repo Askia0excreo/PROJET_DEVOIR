@@ -1,8 +1,10 @@
 <?php
 
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\etudiantController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EvaluationControllerController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,8 +19,8 @@ Route::delete('/etudiant/delete', [App\Http\Controllers\etudiantController::clas
 
 Route::get('/dashboard',[DashboardController::class,'dashboard'])->name('dashboard');
 
-Route::get('/evaluation', [App\Http\Controllers\etudiantController::class, 'index'])->name('evaluation.index');
-Route::get('/evaluation/create', [App\Http\Controllers\etudiantController::class, 'create'])->name('evaluation.create');
-Route::get('/evaluation/store', [App\Http\Controllers\etudiantController::class, 'store'])->name('evaluation.store');
 
+Route::get('/evaluation/index', [App\Http\Controllers\EvaluationController::class, 'index'])->name('evaluation.index');
+Route::post('/evaluation/store', [App\Http\Controllers\EvaluationController::class, 'store'])->name('evaluation.store');
+Route::get('/evaluation', [App\Http\Controllers\EvaluationController::class, 'create'])->name('evaluation.create');
 

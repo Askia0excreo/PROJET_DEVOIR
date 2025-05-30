@@ -1,5 +1,5 @@
-@extends('layouts.base')
-@section('content')
+@extends('layouts.structure')
+ @section('content')
     <!--begin::App Content Header-->
     <div class="app-content-header">
         <!--begin::Container-->

@@ -2,63 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Evaluation;
 use Illuminate\Http\Request;
 
-class evaluationController extends Controller
+class EvaluationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Affiche la liste des évaluations
     public function index()
     {
-        //
+        $evaluations = Evaluation::paginate(10);
+        return view('evaluation.index', compact('evaluations'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Affiche le formulaire d'ajout
     public function create()
     {
-        //
+        return view('evaluation.create_evaluation');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Enregistre une nouvelle évaluation
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'Titre' => 'required|string|max:45',
+            'DateEvaluation' => 'required|date',
+            'TypeEvaluation' => 'required|string',
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        Evaluation::create([
+            'Titre' => $request->Titre,
+            'DateEvaluation' => $request->DateEvaluation,
+            'TypeEvaluation' => $request->TypeEvaluation,
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('evaluation.index')->with('success', 'Évaluation ajoutée avec succès.');
     }
 }

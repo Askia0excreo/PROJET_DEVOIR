@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Etudiant;
 use Illuminate\Http\Request;
 
 class etudiantController extends Controller
@@ -11,54 +12,88 @@ class etudiantController extends Controller
      */
     public function index()
     {
-        return view('etudiant.index');
+    $etudiants = Etudiant::paginate(10);
+
+    return view('etudiant.index', compact('etudiants'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
+ 
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+// Affiche le formulaire de création
+public function create()
+{
+    return view('etudiant.add_etudiant');
+}
+
+// Enregistre un nouvel étudiant
+public function store(Request $request)
+{
+    // Validation des champs
+    $request->validate([
+        'Nom' => 'required|string|max:45',
+        'Prenom' => 'required|string|max:45',
+        'DateNaissance' => 'required|date',
+    ]);
+
+    // Création de l'étudiant
+    Etudiant::create([
+        'Nom' => $request->Nom,
+        'Prenom' => $request->Prenom,
+        'DateNaissance' => $request->DateNaissance,
+    ]);
+
+    // Redirection avec message de succès
+    return redirect()->route('etudiant.index')->with('success', 'Étudiant ajouté avec succès.');
+}
+
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
-
+    
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
+   
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+// Affiche le formulaire d'édition
+public function edit($id)
+{
+    $etudiant = Etudiant::findOrFail($id);
+    return view('etudiant.Edit_etudiant', compact('etudiant'));
+}
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+// Met à jour l'étudiant
+public function update(Request $request, $id)
+{
+    $request->validate([
+        'Nom' => 'required|string|max:45',
+        'Prenom' => 'required|string|max:45',
+        'DateNaissance' => 'required|date',
+    ]);
+
+    $etudiant = Etudiant::findOrFail($id);
+    $etudiant->update([
+        'Nom' => $request->Nom,
+        'Prenom' => $request->Prenom,
+        'DateNaissance' => $request->DateNaissance,
+    ]);
+
+    return redirect()->route('etudiant.index')->with('success', 'Étudiant modifié avec succès.');
+}
+
+// Supprime l'étudiant
+public function destroy($id)
+{
+    $etudiant = Etudiant::findOrFail($id);
+    $etudiant->delete();
+
+    return redirect()->route('etudiant.index')->with('success', 'Étudiant supprimé.');
+}
+
+
+    
 }

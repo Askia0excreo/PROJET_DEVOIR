@@ -2,63 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Note;
+use App\Models\Evaluation;
 use Illuminate\Http\Request;
 
-class noteController extends Controller
+class NoteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Affiche la liste des notes
     public function index()
     {
-        //
+        $notes = Note::with('evaluation')->paginate(10); // Récupère les notes avec leurs évaluations
+        return view('note.index', compact('notes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Affiche le formulaire pour ajouter une note
     public function create()
     {
-        //
+        $evaluations = Evaluation::all(); // Récupère toutes les évaluations
+        return view('note.enregistrer_notes', compact('evaluations'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Enregistre une nouvelle note
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'evaluationid' => 'required|exists:evaluations,id', // Validation pour s'assurer que l'évaluation existe
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        Note::create([
+            'evaluationid' => $request->evaluationid,
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('note.index')->with('success', 'Note ajoutée avec succès.');
     }
 }

@@ -24,3 +24,6 @@ Route::get('/evaluation/index', [App\Http\Controllers\EvaluationController::clas
 Route::post('/evaluation/store', [App\Http\Controllers\EvaluationController::class, 'store'])->name('evaluation.store');
 Route::get('/evaluation', [App\Http\Controllers\EvaluationController::class, 'create'])->name('evaluation.create');
 
+Route::get('/note/index', [App\Http\Controllers\noteController::class, 'index'])->name('note.index');
+Route::get('/note/create', [App\Http\Controllers\noteController::class, 'create'])->name('note.create');
+Route::post('/note/store', [App\Http\Controllers\noteController::class, 'store'])->name('note.store');
